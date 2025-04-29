@@ -1,103 +1,208 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState, useEffect } from "react"
+import BootScreen from "@/components/boot-screen"
+import HomeScreen from "@/components/home-screen"
+import AppScreen from "@/components/app-screen"
+import NotificationPanel from "@/components/notification-panel"
+import SearchOverlay from "@/components/search-overlay"
+import SettingsPanel from "@/components/settings-panel"
+import ProfileScreen from "@/components/profile-screen"
+import type { AppType, Notification, ThemeSettings } from "@/lib/types"
+
+export default function MobileInterface() {
+  const [isBooting, setIsBooting] = useState(true)
+  const [activeApp, setActiveApp] = useState<AppType | null>(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
+  const [themeSettings, setThemeSettings] = useState<ThemeSettings>({
+    primaryColor: "blue",
+    iconStyle: "default",
+    fontSize: "medium",
+  })
+
+  useEffect(() => {
+    const bootTimer = setTimeout(() => {
+      setIsBooting(false)
+    }, 3000)
+
+    const savedTheme = localStorage.getItem("themeSettings")
+    if (savedTheme) {
+      try {
+        const parsedTheme = JSON.parse(savedTheme)
+        setThemeSettings(parsedTheme)
+        setIsDarkMode(parsedTheme.isDarkMode || false)
+      } catch (e) {
+        console.error("Failed to parse saved theme settings")
+      }
+    } else {
+      setIsDarkMode(false)
+    }
+
+    const notificationTimer = setTimeout(() => {
+      addNotification({
+        id: "1",
+        app: "instagram",
+        title: "Nova mensagem",
+        message: "Giovane voce tem uma mensagem para você",
+        time: new Date().toISOString(),
+        read: false,
+      })
+    }, 5000)
+
+    return () => {
+      clearTimeout(bootTimer)
+      clearTimeout(notificationTimer)
+    }
+  }, [])
+
+  const handleAppOpen = (app: AppType) => {
+    setActiveApp(app)
+    setShowNotifications(false)
+    setShowSearch(false)
+    setShowSettings(false)
+    setShowProfile(false)
+  }
+
+  const handleAppClose = () => {
+    setActiveApp(null)
+  }
+
+  const toggleTheme = () => {
+    const newDarkMode = !isDarkMode
+    setIsDarkMode(newDarkMode)
+    updateThemeSettings({ isDarkMode: newDarkMode })
+  }
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications)
+    setShowSearch(false)
+    setShowSettings(false)
+    setShowProfile(false)
+  }
+
+  const toggleSearch = () => {
+    setShowSearch(!showSearch)
+    setShowNotifications(false)
+    setShowSettings(false)
+    setShowProfile(false)
+  }
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings)
+    setShowNotifications(false)
+    setShowSearch(false)
+    setShowProfile(false)
+  }
+
+  const toggleProfile = () => {
+    setShowProfile(!showProfile)
+    setShowNotifications(false)
+    setShowSearch(false)
+    setShowSettings(false)
+  }
+
+  const addNotification = (notification: Notification) => {
+    setNotifications((prev) => [notification, ...prev])
+  }
+
+  const markNotificationAsRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)),
+    )
+  }
+
+  const clearNotification = (id: string) => {
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id))
+  }
+
+  const updateThemeSettings = (newSettings: Partial<ThemeSettings>) => {
+    const updatedSettings = { ...themeSettings, ...newSettings }
+    setThemeSettings(updatedSettings)
+    localStorage.setItem("themeSettings", JSON.stringify(updatedSettings))
+  }
+
+  const getPrimaryColorClass = () => {
+    switch (themeSettings.primaryColor) {
+      case "blue":
+        return "from-blue-600 to-blue-400"
+      case "purple":
+        return "from-purple-600 to-purple-400"
+      case "green":
+        return "from-green-600 to-green-400"
+      case "red":
+        return "from-red-600 to-red-400"
+      case "orange":
+        return "from-orange-600 to-orange-400"
+      default:
+        return "from-blue-600 to-blue-400"
+    }
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className={`flex min-h-screen items-center justify-center p-4 ${isDarkMode ? "bg-gray-900" : "bg-gray-100"}`}>
+      <div
+        className={`relative overflow-hidden w-full max-w-[375px] h-[667px] rounded-[40px] border-8 ${isDarkMode ? "border-gray-800 bg-black" : "border-gray-300 bg-white"} shadow-xl`}
+      >
+        {isBooting ? (
+          <BootScreen isDarkMode={isDarkMode} primaryColorClass={getPrimaryColorClass()} />
+        ) : activeApp ? (
+          <AppScreen
+            app={activeApp}
+            onClose={handleAppClose}
+            isDarkMode={isDarkMode}
+            themeSettings={themeSettings}
+            onAddNotification={addNotification}
+          />
+        ) : (
+          <HomeScreen
+            onAppOpen={handleAppOpen}
+            isDarkMode={isDarkMode}
+            themeSettings={themeSettings}
+            onToggleTheme={toggleTheme}
+            onToggleNotifications={toggleNotifications}
+            onToggleSearch={toggleSearch}
+            onToggleSettings={toggleSettings}
+            onToggleProfile={toggleProfile}
+            notificationCount={notifications.filter((n) => !n.read).length}
+          />
+        )}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        {/* Notification Panel */}
+        {showNotifications && (
+          <NotificationPanel
+            notifications={notifications}
+            isDarkMode={isDarkMode}
+            onClose={() => setShowNotifications(false)}
+            onMarkAsRead={markNotificationAsRead}
+            onClear={clearNotification}
+            onAppOpen={handleAppOpen}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        )}
+
+        {/* Search Overlay */}
+        {showSearch && (
+          <SearchOverlay isDarkMode={isDarkMode} onClose={() => setShowSearch(false)} onAppOpen={handleAppOpen} />
+        )}
+
+        {/* Settings Panel */}
+        {showSettings && (
+          <SettingsPanel
+            isDarkMode={isDarkMode}
+            themeSettings={themeSettings}
+            onClose={() => setShowSettings(false)}
+            onToggleTheme={toggleTheme}
+            onUpdateThemeSettings={updateThemeSettings}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        )}
+
+        {/* Profile Screen */}
+        {showProfile && <ProfileScreen isDarkMode={isDarkMode} onClose={() => setShowProfile(false)} />}
+      </div>
+    </main>
+  )
 }
