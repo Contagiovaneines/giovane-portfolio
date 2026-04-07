@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "node -e \"require('fs').rmSync('.next', { recursive: true, force: true })\"",
     "dev": "next dev",
+    "dev:clean": "npm run clean && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "typecheck": "next typegen && tsc --noEmit --incremental false",
+    "audit:prod": "npm audit --omit=dev",
+    "lint": "next lint",
+    "remotion": "remotion studio remotion/index.ts",
+    "render:showreel": "remotion render remotion/index.ts Showreel out/showreel.mp4"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -37,6 +43,8 @@
     "@radix-ui/react-toggle": "1.1.1",
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
+    "@remotion/player": "4.0.446",
+    "@remotion/renderer": "4.0.446",
     "@tailwindcss/postcss": "^4.1.4",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
@@ -46,21 +54,23 @@
     "embla-carousel-react": "8.5.1",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "next": "15.2.4",
+    "motion": "12.38.0",
+    "next": "^15.5.14",
     "next-themes": "^0.4.4",
     "react": "^19",
     "react-day-picker": "8.10.1",
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
     "react-resizable-panels": "^2.1.7",
-    "recharts": "2.15.0",
+    "remotion": "4.0.446",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
-    "zod": "^3.24.1"
+    "zod": "4.3.6"
   },
   "devDependencies": {
+    "@remotion/cli": "4.0.446",
     "@types/node": "^22",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19",

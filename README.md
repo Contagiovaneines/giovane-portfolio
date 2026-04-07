@@ -1,37 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Giovane Portfolio
 
-## Getting Started
+Portfólio interativo construído em `Next.js` que simula a experiência de um smartphone na tela.
 
-First, run the development server:
+Em vez de uma landing page tradicional, o projeto apresenta informações profissionais, projetos e atalhos externos dentro de uma interface inspirada em sistema mobile.
+
+## Visão geral
+
+O objetivo deste projeto é apresentar o perfil de Giovane de forma mais visual e memorável, combinando:
+
+- identidade pessoal
+- navegação em formato de apps
+- tema customizável
+- transições e telas sobrepostas
+- experiência focada em portfólio e apresentação profissional
+
+O usuário entra em uma tela de boot, acessa uma home com ícones de apps e navega por seções como perfil, projetos, clima, calendário, notas, e-mail e links externos.
+
+## Funcionalidades
+
+- tela inicial com animação de boot
+- interface principal em formato de celular
+- modo claro e escuro
+- personalização de cor principal e tamanho de fonte
+- painel de notificações
+- busca de apps
+- tela de perfil profissional
+- listagem de projetos
+- app de notas com persistência em `localStorage`
+- clima e calendário simulados
+- atalhos para GitHub, LinkedIn e Instagram
+- integração visual com componentes baseados em Radix UI
+
+## Stack
+
+- `Next.js 15`
+- `React 19`
+- `TypeScript`
+- `Tailwind CSS`
+- `Radix UI`
+- `Lucide React`
+
+## Estrutura principal
+
+```text
+app/
+  layout.tsx
+  page.tsx
+
+components/
+  app-screen.tsx
+  boot-screen.tsx
+  home-screen.tsx
+  notification-panel.tsx
+  profile-screen.tsx
+  search-overlay.tsx
+  settings-panel.tsx
+  status-bar.tsx
+  apps/
+
+lib/
+  app-data.ts
+  storage.ts
+
+public/
+  images/
+  perfil.jpg
+```
+
+## Apps e áreas do portfólio
+
+Hoje o projeto já inclui telas ou atalhos para:
+
+- `Instagram`
+- `GitHub`
+- `LinkedIn`
+- `Spotify`
+- `Notes`
+- `Calendar`
+- `Weather`
+- `Projects`
+- `Mail`
+
+Alguns ícones extras existem como base para futuras expansões da interface.
+
+## Como rodar o projeto
+
+### Requisitos
+
+- `Node.js`
+- `npm`
+
+### Instalação
+
+Neste projeto, o caminho mais estável é usar `npm` com `--legacy-peer-deps`.
+
+```bash
+npm install --legacy-peer-deps
+```
+
+Isso é necessário porque há um conflito de `peer dependency` entre `react-day-picker` e `date-fns` no estado atual do repositório.
+
+### Desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Depois, abra:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Build de produção
 
-## Learn More
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts disponíveis
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Decisões do projeto
 
-## Deploy on Vercel
+### Interface em formato de celular
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O layout principal foi pensado para destacar o portfólio como experiência, não apenas como vitrine estática. Isso ajuda a diferenciar a apresentação visual do projeto.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# giovane-portfolio" 
+### Persistência local
+
+Configurações de tema e notas são armazenadas no navegador com `localStorage`, permitindo que a experiência permaneça personalizada entre acessos.
+
+### Estrutura modular
+
+Cada tela foi separada em componentes próprios, o que facilita manutenção, testes visuais e evolução futura.
+
+## Próximas melhorias possíveis
+
+- buscar projetos diretamente do GitHub em vez de manter tudo manualmente
+- adicionar animações mais refinadas com `motion`
+- criar uma rota de showreel com `Remotion`
+- melhorar SEO e compartilhamento social
+- substituir imagens placeholder por thumbnails reais dos projetos
+- corrigir textos com problemas de encoding em alguns componentes
+
+## Status
+
+O projeto está funcional como portfólio interativo e serve bem como base para evoluções visuais e integrações futuras.

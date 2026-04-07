@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { X, Check, Trash } from "lucide-react"
+import { motion } from "motion/react"
 import { apps } from "@/lib/app-data"
 import type { Notification, AppType } from "@/lib/types"
 import clsx from "clsx"
@@ -48,14 +49,13 @@ export default function NotificationPanel({
   }
 
   return (
-    <div
-      className={clsx(
-        "absolute inset-0 flex flex-col transition-transform duration-300",
-        isVisible ? "translate-y-0" : "translate-y-full",
-        isDarkMode ? "bg-black text-white" : "bg-white text-black"
-      )}
+    <motion.div
+      className={clsx("absolute inset-0 flex flex-col", isDarkMode ? "bg-black text-white" : "bg-white text-black")}
+      initial={false}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+      <div className={`flex items-center justify-between border-b p-4 ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}>
         <h2 className="text-lg font-semibold">Notifications</h2>
         <button
           onClick={handleClose}
@@ -83,7 +83,7 @@ export default function NotificationPanel({
               const appIconColor = app ? app.iconColor || "text-white" : "text-white"
 
               return (
-                <div
+                <motion.div
                   key={notification.id}
                   className={clsx(
                     "p-3 rounded-lg",
@@ -96,6 +96,9 @@ export default function NotificationPanel({
                       : "bg-blue-50",
                     !notification.read && "border-l-4 border-blue-500"
                   )}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.24, delay: 0.04 }}
                 >
                   <div className="flex justify-between">
                     <div
@@ -153,12 +156,12 @@ export default function NotificationPanel({
                       </button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )
             })}
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }

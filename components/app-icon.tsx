@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+
 import type { AppType } from "@/lib/types"
 
 interface AppIconProps {
@@ -16,31 +17,24 @@ export default function AppIcon({ app, onClick, isDarkMode, iconStyle = "default
   const handleMouseDown = () => setIsPressed(true)
   const handleMouseUp = () => setIsPressed(false)
 
-  // Apply different icon styles based on the setting
   const getIconStyle = () => {
     switch (iconStyle) {
       case "rounded":
-        return "rounded-xl"
+        return "rounded-[1.15rem]"
       case "circle":
         return "rounded-full"
       case "square":
-        return "rounded-md"
+        return "rounded-lg"
       default:
-        return "rounded-xl"
+        return "rounded-[1.15rem]"
     }
   }
 
-  // Define background color and icon color based on dark mode
-  const iconColor = app.iconColor || (isDarkMode ? "text-white" : "text-black")  // Para o modo claro, ícone será 'text-black'
-  const textColor = isDarkMode ? "text-white" : "text-black"  // Para o modo claro, texto será 'text-black'
+  const iconColor = app.iconColor || (isDarkMode ? "text-white" : "text-slate-900")
+  const textColor = isDarkMode ? "text-white" : "text-slate-900"
+  const borderClass = isDarkMode ? "border-white/10" : "border-slate-300/80"
 
-  // Define background color for each app, depending on the mode (dark/light)
-  const bgColor = isDarkMode
-    ? app.bgColor || "bg-gray-800"  // Default dark mode background
-    : app.bgColor || "bg-gray-200"  // Default light mode background
-
-  // Set specific colors for each app (if not provided by the app data)
-  const iconWrapperBgColor = (isDarkMode ? app.bgColor : app.bgColor) || {
+  const iconWrapperBgColor = app.bgColor || {
     instagram: "bg-gradient-to-tr from-purple-600 to-pink-500",
     github: "bg-gray-900",
     linkedin: "bg-blue-700",
@@ -57,7 +51,9 @@ export default function AppIcon({ app, onClick, isDarkMode, iconStyle = "default
 
   return (
     <button
-      className={`flex flex-col items-center transition-all duration-200 ${isPressed ? "scale-90" : "hover:scale-105 hover:-translate-y-1"}`}
+      className={`flex flex-col items-center transition-all duration-200 ${
+        isPressed ? "scale-[0.92]" : "hover:-translate-y-1 hover:scale-[1.03]"
+      }`}
       onClick={onClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
@@ -67,11 +63,13 @@ export default function AppIcon({ app, onClick, isDarkMode, iconStyle = "default
       aria-pressed={isPressed}
     >
       <div
-        className={`w-14 h-14 flex items-center justify-center ${getIconStyle()} ${iconWrapperBgColor} transition-colors duration-200`}
+        className={`flex h-14 w-14 items-center justify-center border ${borderClass} ${getIconStyle()} ${iconWrapperBgColor} shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition-colors duration-200`}
       >
-        <app.icon className={`w-8 h-8 ${iconColor} transition-colors duration-200`} />
+        <app.icon className={`h-7 w-7 ${iconColor} transition-colors duration-200`} />
       </div>
-      <span className={`mt-1 text-xs font-medium ${textColor} transition-colors duration-200`}>{app.name}</span>
+      <span className={`mt-1.5 text-[11px] font-semibold leading-none ${textColor} transition-colors duration-200`}>
+        {app.name}
+      </span>
     </button>
   )
 }

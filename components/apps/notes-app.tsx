@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import { readStoredJson } from "@/lib/storage"
 
 interface Note {
   id: number
@@ -20,6 +21,33 @@ interface NotesAppProps {
   isDarkMode: boolean
 }
 
+const defaultNotes: Note[] = [
+  {
+    id: 1,
+    title: "Meeting Notes",
+    content: "Discuss project timeline and deliverables with the team.",
+    date: "Apr 15, 2023",
+    category: "Work",
+    tags: ["meeting", "project"],
+  },
+  {
+    id: 2,
+    title: "Shopping List",
+    content: "Milk, eggs, bread, fruits, vegetables",
+    date: "Apr 12, 2023",
+    category: "Personal",
+    tags: ["shopping", "groceries"],
+  },
+  {
+    id: 3,
+    title: "Ideas for Mobile Interface",
+    content: "Add animations for transitions, implement dark mode, create app icons",
+    date: "Apr 10, 2023",
+    category: "Projects",
+    tags: ["ideas", "mobile", "ui"],
+  },
+]
+
 export default function NotesApp({ isDarkMode }: NotesAppProps) {
   const [notes, setNotes] = useState<Note[]>([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -31,44 +59,8 @@ export default function NotesApp({ isDarkMode }: NotesAppProps) {
 
   // Load notes from localStorage on component mount
   useEffect(() => {
-    const savedNotes = localStorage.getItem("notes")
-    if (savedNotes) {
-      try {
-        setNotes(JSON.parse(savedNotes))
-      } catch (e) {
-        console.error("Failed to parse saved notes")
-      }
-    } else {
-      // Set default notes if none exist
-      const defaultNotes: Note[] = [
-        {
-          id: 1,
-          title: "Meeting Notes",
-          content: "Discuss project timeline and deliverables with the team.",
-          date: "Apr 15, 2023",
-          category: "Work",
-          tags: ["meeting", "project"],
-        },
-        {
-          id: 2,
-          title: "Shopping List",
-          content: "Milk, eggs, bread, fruits, vegetables",
-          date: "Apr 12, 2023",
-          category: "Personal",
-          tags: ["shopping", "groceries"],
-        },
-        {
-          id: 3,
-          title: "Ideas for Mobile Interface",
-          content: "Add animations for transitions, implement dark mode, create app icons",
-          date: "Apr 10, 2023",
-          category: "Projects",
-          tags: ["ideas", "mobile", "ui"],
-        },
-      ]
-      setNotes(defaultNotes)
-      localStorage.setItem("notes", JSON.stringify(defaultNotes))
-    }
+    const storedNotes = readStoredJson<Note[]>("notes", defaultNotes)
+    setNotes(storedNotes)
   }, [])
 
   // Save notes to localStorage whenever they change

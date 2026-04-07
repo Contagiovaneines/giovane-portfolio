@@ -1,18 +1,18 @@
 import {
-  Instagram,
-  Github,
-  Linkedin,
-  Music,
-  Youtube,
-  FileText,
   Calendar,
-  Cloud,
-  Settings,
-  Mail,
-  Phone,
   Camera,
+  Cloud,
+  FileText,
   FolderKanban,
+  Github,
+  Instagram,
+  Linkedin,
+  Mail,
+  Music,
+  Phone,
+  Youtube,
 } from "lucide-react"
+
 import type { AppType } from "./types"
 
 export const apps: AppType[] = [
@@ -20,84 +20,84 @@ export const apps: AppType[] = [
     id: "instagram",
     name: "Instagram",
     icon: Instagram,
-    bgColor: "bg-gradient-to-tr from-purple-600 to-pink-500", // cor de fundo gradiente
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-gradient-to-tr from-purple-600 to-pink-500",
+    iconColor: "text-white",
   },
   {
     id: "github",
     name: "GitHub",
     icon: Github,
-    bgColor: "bg-gray-900", // cor de fundo cinza escuro
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-gray-900",
+    iconColor: "text-white",
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     icon: Linkedin,
-    bgColor: "bg-blue-700", // cor de fundo azul
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-blue-700",
+    iconColor: "text-white",
   },
   {
     id: "spotify",
     name: "Spotify",
     icon: Music,
-    bgColor: "bg-green-600", // cor de fundo verde
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-green-600",
+    iconColor: "text-white",
   },
   {
     id: "youtube",
     name: "YouTube",
     icon: Youtube,
-    bgColor: "bg-red-600", // cor de fundo vermelho
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-red-600",
+    iconColor: "text-white",
   },
   {
     id: "notes",
     name: "Notes",
     icon: FileText,
-    bgColor: "bg-yellow-500", // cor de fundo amarela
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-yellow-400",
+    iconColor: "text-slate-950",
   },
   {
     id: "calendar",
     name: "Calendar",
     icon: Calendar,
-    bgColor: "bg-blue-500", // cor de fundo azul
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-blue-500",
+    iconColor: "text-white",
   },
   {
     id: "weather",
     name: "Weather",
     icon: Cloud,
-    bgColor: "bg-cyan-500", // cor de fundo ciano
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-cyan-500",
+    iconColor: "text-white",
   },
   {
     id: "projects",
     name: "Projects",
     icon: FolderKanban,
-    bgColor: "bg-purple-500", // cor de fundo roxo
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-purple-500",
+    iconColor: "text-white",
   },
   {
     id: "mail",
     name: "Mail",
     icon: Mail,
-    bgColor: "bg-blue-600", // cor de fundo azul
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-blue-600",
+    iconColor: "text-white",
   },
   {
     id: "phone",
     name: "Phone",
     icon: Phone,
-    bgColor: "bg-green-500", // cor de fundo verde
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-green-500",
+    iconColor: "text-white",
   },
   {
     id: "camera",
     name: "Camera",
     icon: Camera,
-    bgColor: "bg-gray-800", // cor de fundo cinza escuro
-    iconColor: "text-white", // ícone branco no modo escuro
+    bgColor: "bg-gray-800",
+    iconColor: "text-white",
   },
 ]

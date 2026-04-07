@@ -22,3 +22,24 @@ export interface ThemeSettings {
   iconStyle: string
   fontSize: string
 }
+
+export interface PortfolioProject {
+  id: string
+  title: string
+  description: string
+  image: string | null
+  category: string
+  technologies: string[]
+  link: string
+  github: string
+  stars: number
+  updatedAt: string
+  language: string | null
+  featured: boolean
+}
+
+export interface PortfolioProjectsResponse {
+  source: "github" | "fallback"
+  username: string
+  projects: PortfolioProject[]
+}

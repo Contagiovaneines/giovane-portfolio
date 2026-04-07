@@ -198,7 +198,7 @@ export default function EmailApp({ isDarkMode }: EmailAppProps) {
         </div>
       ) : (
         <>
-          <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+          <div className={`border-b p-4 ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               <Input
@@ -211,7 +211,7 @@ export default function EmailApp({ isDarkMode }: EmailAppProps) {
             </div>
           </div>
 
-          <div className="flex border-b border-gray-200 dark:border-gray-800">
+          <div className={`flex border-b ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}>
             <button
               className={`flex-1 py-2 text-center ${activeTab === "inbox" ? (isDarkMode ? "border-b-2 border-white" : "border-b-2 border-black") : ""}`}
               onClick={() => setActiveTab("inbox")}
@@ -226,7 +226,7 @@ export default function EmailApp({ isDarkMode }: EmailAppProps) {
             </button>
           </div>
 
-          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+          <div className={`divide-y ${isDarkMode ? "divide-gray-800" : "divide-gray-200"}`}>
             {filteredEmails().length > 0 ? (
               filteredEmails().map((email) => (
                 <div
@@ -273,9 +273,11 @@ export default function EmailApp({ isDarkMode }: EmailAppProps) {
       <div className="fixed bottom-8 right-8">
         <button
           onClick={handleComposeEmail}
-          className={`p-4 rounded-full shadow-lg ${isDarkMode ? "bg-gray-800" : "bg-gray-200"}`}
+          className={`rounded-full p-4 shadow-lg ${
+            isDarkMode ? "bg-gray-800 text-white" : "bg-slate-900 text-white"
+          }`}
         >
-          <Mail className="h-6 w-6 text-white" />
+          <Mail className="h-6 w-6" />
         </button>
       </div>
     </div>

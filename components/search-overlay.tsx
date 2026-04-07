@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { X, Search } from "lucide-react"
+import { motion } from "motion/react"
 import { apps } from "@/lib/app-data"
 import type { AppType } from "@/lib/types"
 import { Input } from "@/components/ui/input"
@@ -41,10 +42,11 @@ export default function SearchOverlay({ isDarkMode, onClose, onAppOpen }: Search
   }
 
   return (
-    <div
-      className={`absolute inset-0 flex flex-col transition-opacity duration-300 ${
-        isVisible ? "opacity-100" : "opacity-0"
-      } ${isDarkMode ? "bg-black/95 text-white" : "bg-white/95 text-black"}`}
+    <motion.div
+      className={`absolute inset-0 flex flex-col ${isDarkMode ? "bg-black/95 text-white" : "bg-white/95 text-black"}`}
+      initial={false}
+      animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
     >
       <div className="flex items-center justify-between p-4">
         <h2 className="text-lg font-semibold">Search</h2>
@@ -78,12 +80,15 @@ export default function SearchOverlay({ isDarkMode, onClose, onAppOpen }: Search
         ) : (
           <div className="space-y-2">
             {searchResults.map((app) => (
-              <div
+              <motion.div
                 key={app.id}
                 className={`p-3 rounded-lg flex items-center ${
                   isDarkMode ? "bg-gray-900 hover:bg-gray-800" : "bg-gray-100 hover:bg-gray-200"
                 } cursor-pointer`}
                 onClick={() => handleAppClick(app)}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center mr-3 ${
@@ -93,11 +98,11 @@ export default function SearchOverlay({ isDarkMode, onClose, onAppOpen }: Search
                   <app.icon className={`w-5 h-5 ${app.iconColor || (isDarkMode ? "text-white" : "text-black")}`} />
                 </div>
                 <span className="font-medium">{app.name}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
